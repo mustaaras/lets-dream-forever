@@ -7,6 +7,9 @@ import { getDictionary } from "@/lib/get-dictionary";
 export const metadata: Metadata = {
     title: "Lets Dream Forever | Premium Stage Design",
     description: "Unique stage designs for weddings and exhibitions by Lets Dream Forever.",
+    icons: {
+        icon: "/icon.png",
+    },
 };
 
 export async function generateStaticParams() {
