@@ -1,0 +1,28 @@
+.switcher {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+}
+
+.langLink {
+    color: var(--foreground);
+    opacity: 0.5;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.langLink:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.active {
+    opacity: 1;
+    color: var(--color-gold);
+    border: 1px solid rgba(198, 166, 100, 0.2);
+}

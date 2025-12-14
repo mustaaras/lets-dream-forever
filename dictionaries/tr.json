@@ -1,0 +1,16 @@
+{
+    "navigation": {
+        "home": "Ana Sayfa",
+        "gallery": "Galeri",
+        "about": "Hakkımızda",
+        "contact": "İletişim"
+    },
+    "hero": {
+        "title": "Hayallerini Sonsuz Kıl",
+        "subtitle": "Mükemmelliği hedefleyen eşsiz sahne tasarımları."
+    },
+    "footer": {
+        "contact_us": "Bize Ulaşın",
+        "rights": "Tüm hakları saklıdır."
+    }
+}

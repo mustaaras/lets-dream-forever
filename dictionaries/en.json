@@ -1,0 +1,16 @@
+{
+  "navigation": {
+    "home": "Home",
+    "gallery": "Gallery",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Lets Dream Forever",
+    "subtitle": "Designing unique stages aimed at perfection."
+  },
+  "footer": {
+    "contact_us": "Contact Us",
+    "rights": "All rights reserved."
+  }
+}
