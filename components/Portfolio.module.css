@@ -158,7 +158,9 @@
 
 @media (max-width: 768px) {
     .grid {
-        columns: 1;
+        columns: 2 150px;
+        /* Force 2 columns with smaller min-width */
+        column-gap: 0.8rem;
     }
 
     .title {

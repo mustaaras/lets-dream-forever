@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import styles from './Portfolio.module.css';
 
@@ -51,7 +51,6 @@ export default function Portfolio({ dict, limit, lang = 'en' }: PortfolioProps) 
                 <h2 className={styles.title}>{dict.portfolio.title}</h2>
                 <p className={styles.subtitle}>{dict.portfolio.subtitle}</p>
 
-                {/* Information Text Section - Only show on full portfolio page? Or always? User asked for text. */}
                 {!limit && (
                     <div className={styles.infoText}>
                         <p dangerouslySetInnerHTML={{ __html: dict.portfolio.description }} />
@@ -60,7 +59,7 @@ export default function Portfolio({ dict, limit, lang = 'en' }: PortfolioProps) 
             </div>
 
             {loading ? (
-                <div style={{ color: 'white', textAlign: 'center' }}>Loading works...</div>
+                <div style={{ color: 'white', textAlign: 'center', padding: '2rem' }}>Loading works...</div>
             ) : (
                 <div className={styles.grid}>
                     {displayItems.map((item) => (
@@ -70,14 +69,7 @@ export default function Portfolio({ dict, limit, lang = 'en' }: PortfolioProps) 
                             onClick={() => setSelectedItem(item)}
                         >
                             {item.type === 'video' ? (
-                                <video
-                                    src={item.src}
-                                    muted
-                                    playsInline
-                                    onMouseOver={(e) => e.currentTarget.play()}
-                                    onMouseOut={(e) => e.currentTarget.pause()}
-                                    className={styles.gridVideo}
-                                />
+                                <VideoItem src={item.src} />
                             ) : (
                                 <Image
                                     src={item.src}
@@ -114,6 +106,7 @@ export default function Portfolio({ dict, limit, lang = 'en' }: PortfolioProps) 
                                 src={selectedItem.src}
                                 controls
                                 autoPlay
+                                playsInline
                                 className={styles.lightboxImage}
                             />
                         ) : (
@@ -130,5 +123,56 @@ export default function Portfolio({ dict, limit, lang = 'en' }: PortfolioProps) 
                 )}
             </div>
         </section>
+    );
+}
+
+// Sub-component for Video to handle Intersection Observer (Mobile Autoplay)
+function VideoItem({ src }: { src: string }) {
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        // Intersection Observer for Mobile Autoplay
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        // Play when 50% visible
+                        const playPromise = video.play();
+                        if (playPromise !== undefined) {
+                            playPromise.catch(() => {
+                                // Auto-play was prevented
+                            });
+                        }
+                    } else {
+                        video.pause();
+                    }
+                });
+            },
+            { threshold: 0.5 }
+        );
+
+        observer.observe(video);
+
+        return () => {
+            if (video) observer.unobserve(video);
+        };
+    }, []);
+
+    return (
+        <video
+            ref={videoRef}
+            src={src}
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className={styles.gridVideo}
+            style={{ backgroundColor: '#202020' }} // Dark gray background to prevent black flash
+            onMouseOver={(e) => e.currentTarget.play()}
+            onMouseOut={(e) => e.currentTarget.pause()}
+        />
     );
 }

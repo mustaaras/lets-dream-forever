@@ -1,16 +1,28 @@
+"use client";
+
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import LanguageSwitcher from './LanguageSwitcher';
 import styles from './Header.module.css';
 
 export default function Header({ lang, dict }: { lang: string, dict: any }) {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+    };
+
+    const closeMenu = () => {
+        setIsMenuOpen(false);
+    };
+
     return (
         <header className={styles.header}>
             <div className={styles.logoContainer}>
-                {/* Placeholder for Logo Image - replaced with text for now or verify path */}
-                <Link href={`/${lang}`} className={styles.logoLink}>
+                <Link href={`/${lang}`} className={styles.logoLink} onClick={closeMenu}>
                     <Image
-                        src="/assets/favicon-transparent.png"
+                        src="/icon.png" // Updated to use the new icon explicitly
                         alt="Lets Dream Forever"
                         width={50}
                         height={50}
@@ -20,6 +32,7 @@ export default function Header({ lang, dict }: { lang: string, dict: any }) {
                 </Link>
             </div>
 
+            {/* Desktop Nav */}
             <nav className={styles.nav}>
                 <Link href={`/${lang}`} className={styles.navLink}>
                     {dict.navigation.home}
@@ -36,9 +49,32 @@ export default function Header({ lang, dict }: { lang: string, dict: any }) {
                 <LanguageSwitcher currentLang={lang} />
             </nav>
 
-            <button className={styles.mobileMenuButton} aria-label="Menu">
-                ☰
+            <button
+                className={styles.mobileMenuButton}
+                aria-label="Menu"
+                onClick={toggleMenu}
+            >
+                {isMenuOpen ? '✕' : '☰'}
             </button>
+
+            {/* Mobile Nav Overlay */}
+            <div className={`${styles.mobileNav} ${isMenuOpen ? styles.mobileNavOpen : ''}`}>
+                <Link href={`/${lang}`} className={styles.mobileNavLink} onClick={closeMenu}>
+                    {dict.navigation.home}
+                </Link>
+                <Link href={`/${lang}/#about`} className={styles.mobileNavLink} onClick={closeMenu}>
+                    {dict.navigation.about}
+                </Link>
+                <Link href={`/${lang}/portfolio`} className={styles.mobileNavLink} onClick={closeMenu}>
+                    {dict.navigation.portfolio}
+                </Link>
+                <Link href={`/${lang}/#contact`} className={styles.mobileNavLink} onClick={closeMenu}>
+                    {dict.navigation.contact}
+                </Link>
+                <div style={{ marginTop: '2rem' }}>
+                    <LanguageSwitcher currentLang={lang} />
+                </div>
+            </div>
         </header>
     );
 }
