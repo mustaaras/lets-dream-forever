@@ -1,13 +1,27 @@
 {
     "navigation": {
         "home": "Ana Sayfa",
-        "gallery": "Galeri",
         "about": "Hakkımızda",
+        "portfolio": "Portfolyo",
         "contact": "İletişim"
     },
     "hero": {
         "title": "Hayallerini Sonsuz Kıl",
         "subtitle": "Mükemmelliği hedefleyen eşsiz sahne tasarımları."
+    },
+    "about": {
+        "description_1": "En iyi sahneleri el emeğiyle tasarlıyoruz. Her eserimiz benzersizdir; tutku ve titizlikle hazırlanır. İzmir ve çevre illerde düğün ve fuarlara hizmet veriyor, hayallerinizi gerçeğe dönüştürüyoruz.",
+        "description_2": "Yaratıcı zihniyetimiz, her detayın sanatsal bir dokunuş ve özveri içermesini sağlar."
+    },
+    "portfolio": {
+        "title": "Seçilmiş İşler",
+        "subtitle": "Küratörlü Sahne Tasarımları",
+        "view_all": "Tüm Projeleri Gör",
+        "description": "<strong>Let's Dream Forever</strong> olarak sadece sahne kurmuyoruz; sürükleyici atmosferler yaratıyoruz. Ekibimiz, sıradan mekanları olağanüstü deneyimlere dönüştüren özgün ve özel tasarım yapılar oluşturma konusunda uzmanlaşmıştır. Karmaşık aydınlatma düzenlemelerinden özel mimari unsurlara kadar her detay, etkinliğinizin kalıcı bir izlenim bırakması için titizlikle planlanır."
+    },
+    "gallery": {
+        "title": "Son Instagram Gönderileri",
+        "view_on_instagram": "Instagram'da Görüntüle"
     },
     "footer": {
         "contact_us": "Bize Ulaşın",

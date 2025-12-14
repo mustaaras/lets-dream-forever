@@ -1,54 +1,93 @@
 .feed {
-    padding: 4rem 5% 8rem;
-    background: #080c10;
+    padding: 6rem 5% 8rem;
+    background: var(--color-dark-blue);
+    position: relative;
+    overflow: hidden;
 }
 
 .header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 4rem;
+    position: relative;
+    z-index: 2;
 }
 
 .title {
-    font-size: 2rem;
-    color: var(--color-gold);
+    font-family: 'Great Vibes', cursive;
+    font-size: 4rem;
+    background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-light) 50%, #ffffff 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     margin-bottom: 0.5rem;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 .handle {
+    font-family: var(--font-heading);
     color: var(--foreground);
     opacity: 0.6;
-    font-size: 0.9rem;
-    letter-spacing: 0.05em;
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    display: inline-block;
+    padding-bottom: 5px;
+    border-bottom: 1px solid transparent;
+}
+
+.handle:hover {
+    color: var(--color-gold);
+    opacity: 1;
+    border-bottom-color: var(--color-gold);
+    transform: translateY(-2px);
 }
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-    max-width: 1200px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    /* Increased gap slightly for 3-column layout */
+    max-width: 1400px;
     margin: 0 auto;
+    padding: 1rem;
 }
 
 .item {
     aspect-ratio: 1/1;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     overflow: hidden;
-    transition: transform 0.3s ease;
+    cursor: pointer;
+    border-radius: 4px;
+    /* Slight softening */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .item:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
     border-color: var(--color-gold);
+}
+
+/* Optimize image interaction */
+.item img {
+    transition: transform 0.6s ease !important;
+}
+
+.item:hover img {
+    transform: scale(1.1) !important;
 }
 
 .placeholderIcon {
     font-size: 3rem;
-    opacity: 0.2;
+    opacity: 0.1;
+    color: var(--foreground);
 }
 
 .overlay {
@@ -57,12 +96,15 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(28, 36, 47, 0.85);
+    /* Slate blue tint */
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(2px);
 }
 
 .item:hover .overlay {
@@ -70,9 +112,40 @@
 }
 
 .viewBtn {
-    color: white;
-    border: 1px solid white;
-    padding: 0.5rem 1rem;
-    font-size: 0.8rem;
+    color: var(--color-gold);
+    border: 1px solid var(--color-gold);
+    padding: 0.8rem 1.5rem;
+    font-size: 0.85rem;
     text-transform: uppercase;
+    letter-spacing: 0.15em;
+    background: rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+    transform: translateY(20px);
+}
+
+.item:hover .viewBtn {
+    transform: translateY(0);
+}
+
+.viewBtn:hover {
+    background: var(--color-gold);
+    color: #000;
+    box-shadow: 0 0 15px rgba(198, 166, 100, 0.6);
+}
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 3rem;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 columns on mobile */
+        gap: 0.5rem;
+        padding: 0.5rem;
+    }
+
+    .feed {
+        padding: 4rem 1rem 6rem;
+    }
 }

@@ -8,10 +8,31 @@
     text-align: center;
     overflow: hidden;
     /* Premium Dark Gradient Placeholder until we have a real hero video/image */
-    background: radial-gradient(circle at center, #1a242f 0%, #050505 100%);
+    background: radial-gradient(circle at center, var(--color-dark-blue) 0%, var(--color-black) 100%);
     margin-top: -80px;
     /* Offset header height for full screen */
     padding-top: 80px;
+}
+
+.videoBackground {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.videoOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(71, 82, 96, 0.85);
+    /* Slate Blue brand color with opacity */
+    z-index: 1;
 }
 
 .content {
@@ -19,6 +40,51 @@
     padding: 0 5%;
     max-width: 1200px;
     animation: fadeIn 1.5s ease-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.heroLogo {
+    object-fit: contain;
+    max-width: 500px;
+    width: 90%;
+    height: auto;
+    margin-bottom: 2rem;
+}
+
+.logoScript {
+    font-family: 'Great Vibes', cursive;
+    font-size: 5rem;
+    font-weight: 400;
+    background: linear-gradient(135deg, #d4af37 0%, #c6a664 50%, #f0d77b 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.1;
+}
+
+.logoSerif {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+    letter-spacing: 0.4em;
+    background: linear-gradient(135deg, #d4af37 0%, #c6a664 50%, #f0d77b 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-top: -0.5rem;
+}
+
+@media (max-width: 768px) {
+    .logoScript {
+        font-size: 3rem;
+    }
+
+    .logoSerif {
+        font-size: 1.5rem;
+        letter-spacing: 0.3em;
+    }
 }
 
 .title {
@@ -67,9 +133,9 @@
     transform: translate(-50%, -50%);
     width: 60%;
     height: 60%;
-    background: url('/assets/logo-1.jpg') no-repeat center center;
+    background: url('/favicon.png') no-repeat center center;
     background-size: contain;
-    opacity: 0.05;
+    opacity: 0.1;
     z-index: 1;
     mix-blend-mode: overlay;
     pointer-events: none;
@@ -91,4 +157,31 @@
     .title {
         font-size: 2.5rem;
     }
+}
+
+.soundButton {
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+}
+
+.soundButton:hover {
+    background: var(--color-gold);
+    color: black;
+    border-color: var(--color-gold);
+    transform: scale(1.1);
 }

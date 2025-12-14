@@ -3,11 +3,26 @@
     "home": "Home",
     "gallery": "Gallery",
     "about": "About",
+    "portfolio": "Portfolio",
     "contact": "Contact"
   },
   "hero": {
     "title": "Lets Dream Forever",
     "subtitle": "Designing unique stages aimed at perfection."
+  },
+  "about": {
+    "description_1": "We design the best stages by hand. Each work is unique, crafted with passion and precision. Serving weddings and exhibitions in Izmir and surrounding cities, we turn your dreams into reality.",
+    "description_2": "Our creator mindset ensures that every detail involves artistic touch and dedication."
+  },
+  "portfolio": {
+    "title": "Selected Works",
+    "subtitle": "Curated Stage Designs",
+    "view_all": "View All Projects",
+    "description": "At <strong>Let's Dream Forever</strong>, we don't just build stages; we craft immersive environments. Our team specializes in creating unique, custom-designed structures that transform ordinary venues into extraordinary experiences. From intricate lighting rigs to bespoke architectural elements, every detail is meticulously planned to ensure your event leaves a lasting impression."
+  },
+  "gallery": {
+    "title": "Latest Instagram Posts",
+    "view_on_instagram": "View on Instagram"
   },
   "footer": {
     "contact_us": "Contact Us",

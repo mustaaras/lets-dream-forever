@@ -8,11 +8,9 @@ export default function About({ dict }: { dict: any }) {
             <div className={styles.container}>
                 <h2 className={styles.title}>{dict.navigation.about}</h2>
                 <p className={styles.description}>
-                    {/* Extended text would go here. Using a generic placeholder based on user description. */}
-                    We design the best stages by hand. Each work is unique, crafted with passion and precision.
-                    Serving weddings and exhibitions in Izmir and surrounding cities, we turn your dreams into reality.
+                    {dict.about.description_1}
                     <br /><br />
-                    Our creator mindset ensures that every detail involves artistic touch and dedication.
+                    {dict.about.description_2}
                 </p>
             </div>
         </section>

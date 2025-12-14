@@ -15,7 +15,7 @@ export function middleware(request: NextRequest) {
     // Redirect if there is no locale
     if (pathnameIsMissingLocale) {
         // Exclude static files and api
-        if (pathname.startsWith("/_next") || pathname.startsWith("/assets") || pathname.startsWith("/favicon.ico")) {
+        if (pathname.startsWith("/_next") || pathname.startsWith("/assets") || pathname.startsWith("/favicon.ico") || pathname.startsWith("/api")) {
             return;
         }
 
