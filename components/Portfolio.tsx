@@ -168,7 +168,7 @@ function VideoItem({ src }: { src: string }) {
             muted
             loop
             playsInline
-            preload="metadata"
+            preload="none" /* PREVENTS network congestion on load. Autoplay triggers load on scroll. */
             className={styles.gridVideo}
             style={{ backgroundColor: '#202020' }} // Dark gray background to prevent black flash
             onMouseOver={(e) => e.currentTarget.play()}
