@@ -4,13 +4,29 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { getDictionary } from "@/lib/get-dictionary";
 
-export const metadata: Metadata = {
-    title: "Lets Dream Forever | Premium Stage Design",
-    description: "Unique stage designs for weddings and exhibitions by Lets Dream Forever.",
-    icons: {
-        icon: "/icon.png",
-    },
-};
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+    const { lang } = await params;
+
+    const titles = {
+        en: "Lets Dream Forever | Premium Stage Design",
+        tr: "Lets Dream Forever | Premium Sahne Tasarımı",
+        ar: "Lets Dream Forever | تصميم المسرح الفاخر"
+    };
+
+    const descriptions = {
+        en: "Unique stage designs for weddings and exhibitions by Lets Dream Forever.",
+        tr: "Lets Dream Forever ile düğünler ve sergiler için benzersiz sahne tasarımları.",
+        ar: "تصميمات مسرح فريدة لحفلات الزفاف والمعارض من Lets Dream Forever."
+    };
+
+    return {
+        title: titles[lang as keyof typeof titles] || titles.en,
+        description: descriptions[lang as keyof typeof descriptions] || descriptions.en,
+        icons: {
+            icon: "/icon.png",
+        },
+    };
+}
 
 export async function generateStaticParams() {
     return [{ lang: "en" }, { lang: "tr" }, { lang: "ar" }];
