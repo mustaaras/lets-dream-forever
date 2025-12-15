@@ -40,7 +40,7 @@ export default function Hero({ dict }: { dict: any }) {
                     className={styles.heroLogo}
                 />
                 <p className={styles.subtitle}>{dict.hero.subtitle}</p>
-                <Link href="#contact" className={styles.cta}>
+                <Link href="https://wa.me/905051516611" target="_blank" className={styles.cta}>
                     {dict.footer.contact_us}
                 </Link>
             </div>

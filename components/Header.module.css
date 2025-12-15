@@ -151,4 +151,22 @@
     .mobileNavLink:hover {
         color: var(--color-gold);
     }
+
+    .closeButton {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        background: none;
+        border: none;
+        color: var(--color-gold);
+        font-size: 3.5rem;
+        font-weight: 300;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+    .closeButton:hover {
+        transform: rotate(90deg);
+        color: white;
+    }
 }

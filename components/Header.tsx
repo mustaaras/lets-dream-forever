@@ -59,6 +59,13 @@ export default function Header({ lang, dict }: { lang: string, dict: any }) {
 
             {/* Mobile Nav Overlay */}
             <div className={`${styles.mobileNav} ${isMenuOpen ? styles.mobileNavOpen : ''}`}>
+                <button
+                    className={styles.closeButton}
+                    onClick={closeMenu}
+                    aria-label="Close Menu"
+                >
+                    &times;
+                </button>
                 <Link href={`/${lang}`} className={styles.mobileNavLink} onClick={closeMenu}>
                     {dict.navigation.home}
                 </Link>
