@@ -1,16 +1,23 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './Hero.module.css';
 
 export default function Hero({ dict }: { dict: any }) {
+    const [isMuted, setIsMuted] = useState(true);
+
+    const toggleMute = () => {
+        setIsMuted(!isMuted);
+    };
+
     return (
         <section className={styles.hero}>
             <video
                 className={styles.videoBackground}
                 autoPlay
-                muted
+                muted={isMuted}
                 loop
                 playsInline
             >
@@ -31,6 +38,10 @@ export default function Hero({ dict }: { dict: any }) {
                     {dict.footer.contact_us}
                 </Link>
             </div>
+
+            <button onClick={toggleMute} className={styles.soundButton} aria-label="Toggle Sound">
+                {isMuted ? '🔇' : '🔊'}
+            </button>
         </section>
     );
 }
