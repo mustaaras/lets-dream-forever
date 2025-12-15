@@ -1,51 +1,17 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './Hero.module.css';
 
 export default function Hero({ dict }: { dict: any }) {
-    const [isMuted, setIsMuted] = useState(true);
-    const videoRef = useRef<HTMLVideoElement>(null);
-
-    useEffect(() => {
-        // Force play on mount to ensure autoplay works reliably
-        if (videoRef.current) {
-            videoRef.current.play().catch(e => {
-                console.log("Autoplay prevented:", e);
-                // Interaction usually required if this fails, but it's muted so it should pass
-            });
-        }
-    }, []);
-
-    const toggleMute = () => {
-        if (videoRef.current) {
-            videoRef.current.muted = !isMuted;
-            setIsMuted(!isMuted);
-            // Ensure video plays if it was paused (e.g. by battery saver)
-            if (videoRef.current.paused) {
-                videoRef.current.play().catch(e => console.log("Play failed on mute toggle:", e));
-            }
-        }
-    };
-
-    const handleHeroClick = () => {
-        if (videoRef.current && videoRef.current.paused) {
-            videoRef.current.play().catch(e => console.log("Play failed on click:", e));
-        }
-    };
-
     return (
-        <section className={styles.hero} onClick={handleHeroClick}>
+        <section className={styles.hero}>
             <video
-                ref={videoRef}
                 className={styles.videoBackground}
-                autoPlay
-                muted={isMuted}
+                controls
                 loop
                 playsInline
-                preload="auto"
             >
                 <source src="/assets/hero-bg.mp4" type="video/mp4" />
             </video>
@@ -64,10 +30,6 @@ export default function Hero({ dict }: { dict: any }) {
                     {dict.footer.contact_us}
                 </Link>
             </div>
-
-            <button onClick={toggleMute} className={styles.soundButton} aria-label="Toggle Sound">
-                {isMuted ? '🔇' : '🔊'}
-            </button>
         </section>
     );
 }

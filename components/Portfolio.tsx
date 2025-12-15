@@ -126,56 +126,19 @@ export default function Portfolio({ dict, limit, lang = 'en' }: PortfolioProps) 
     );
 }
 
-// Sub-component for Video - displays a styled placeholder
-// Safari doesn't reliably show video thumbnails, so we show a branded placeholder
-// Videos play in the lightbox with native controls
+// Simplest possible video component - just a video tag with controls
 function VideoItem({ src }: { src: string }) {
-    // Use the video filename as display text
-    const filename = src.split('/').pop()?.replace('.mp4', '') || 'Video';
-
     return (
-        <div style={{
-            position: 'relative',
-            width: '100%',
-            height: '100%',
-            background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            minHeight: '200px',
-            padding: '1rem'
-        }}>
-            {/* Play Circle */}
-            <div style={{
-                width: '60px',
-                height: '60px',
-                borderRadius: '50%',
-                backgroundColor: 'rgba(198, 166, 100, 0.9)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: '0.5rem'
-            }}>
-                <span style={{
-                    color: '#1a1a1a',
-                    fontSize: '28px',
-                    marginLeft: '4px'
-                }}>▶</span>
-            </div>
-            {/* Video Label */}
-            <span style={{
-                color: '#c6a664',
-                fontSize: '0.75rem',
-                textAlign: 'center',
-                opacity: 0.8,
-                maxWidth: '100%',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap'
-            }}>
-                Video
-            </span>
-        </div>
+        <video
+            src={src}
+            controls
+            playsInline
+            style={{
+                width: '100%',
+                height: 'auto',
+                display: 'block',
+                backgroundColor: '#1a1a1a'
+            }}
+        />
     );
 }
