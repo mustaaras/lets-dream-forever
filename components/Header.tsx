@@ -34,19 +34,19 @@ export default function Header({ lang, dict }: { lang: string, dict: any }) {
 
             {/* Desktop Nav */}
             <nav className={styles.nav}>
-                <Link href={`/${lang}`} className={styles.navLink}>
+                <Link href={`/${lang}`} className={styles.navLink} prefetch={false}>
                     {dict.navigation.home}
                 </Link>
-                <Link href={`/${lang}/#about`} className={styles.navLink}>
+                <Link href={`/${lang}/#about`} className={styles.navLink} prefetch={false}>
                     {dict.navigation.about}
                 </Link>
-                <Link href={`/${lang}/portfolio`} className={styles.navLink}>
+                <Link href={`/${lang}/portfolio`} className={styles.navLink} prefetch={false}>
                     {dict.navigation.portfolio}
                 </Link>
-                <Link href={`/${lang}/contact`} className={styles.navLink}>
+                <Link href={`/${lang}/contact`} className={styles.navLink} prefetch={false}>
                     {dict.navigation.contact}
                 </Link>
-                <Link href={`/${lang}/faq`} className={styles.navLink}>
+                <Link href={`/${lang}/faq`} className={styles.navLink} prefetch={false}>
                     {dict.navigation.faq}
                 </Link>
                 <LanguageSwitcher currentLang={lang} />
@@ -69,19 +69,19 @@ export default function Header({ lang, dict }: { lang: string, dict: any }) {
                 >
                     &times;
                 </button>
-                <Link href={`/${lang}`} className={styles.mobileNavLink} onClick={closeMenu}>
+                <Link href={`/${lang}`} className={styles.mobileNavLink} onClick={closeMenu} prefetch={false}>
                     {dict.navigation.home}
                 </Link>
-                <Link href={`/${lang}/#about`} className={styles.mobileNavLink} onClick={closeMenu}>
+                <Link href={`/${lang}/#about`} className={styles.mobileNavLink} onClick={closeMenu} prefetch={false}>
                     {dict.navigation.about}
                 </Link>
-                <Link href={`/${lang}/portfolio`} className={styles.mobileNavLink} onClick={closeMenu}>
+                <Link href={`/${lang}/portfolio`} className={styles.mobileNavLink} onClick={closeMenu} prefetch={false}>
                     {dict.navigation.portfolio}
                 </Link>
-                <Link href={`/${lang}/contact`} className={styles.mobileNavLink} onClick={closeMenu}>
+                <Link href={`/${lang}/contact`} className={styles.mobileNavLink} onClick={closeMenu} prefetch={false}>
                     {dict.navigation.contact}
                 </Link>
-                <Link href={`/${lang}/faq`} className={styles.mobileNavLink} onClick={closeMenu}>
+                <Link href={`/${lang}/faq`} className={styles.mobileNavLink} onClick={closeMenu} prefetch={false}>
                     {dict.navigation.faq}
                 </Link>
                 <div style={{ marginTop: '2rem' }}>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './Hero.module.css';
@@ -8,6 +8,16 @@ import styles from './Hero.module.css';
 export default function Hero({ dict }: { dict: any }) {
     const [isMuted, setIsMuted] = useState(true);
     const videoRef = useRef<HTMLVideoElement>(null);
+
+    useEffect(() => {
+        // Force play on mount to ensure autoplay works reliably
+        if (videoRef.current) {
+            videoRef.current.play().catch(e => {
+                console.log("Autoplay prevented:", e);
+                // Interaction usually required if this fails, but it's muted so it should pass
+            });
+        }
+    }, []);
 
     const toggleMute = () => {
         if (videoRef.current) {
@@ -25,11 +35,11 @@ export default function Hero({ dict }: { dict: any }) {
                 muted={isMuted}
                 loop
                 playsInline
+                preload="auto"
             >
                 <source src="/assets/hero-bg.mp4" type="video/mp4" />
             </video>
             <div className={styles.videoOverlay}></div>
-            <div className={styles.backgroundDecoration}></div>
             <div className={styles.content}>
                 <Image
                     src="/assets/logo-v2.png"
