@@ -126,96 +126,32 @@ export default function Portfolio({ dict, limit, lang = 'en' }: PortfolioProps) 
     );
 }
 
-// Sub-component for Video to handle Intersection Observer (Mobile Autoplay)
+// Sub-component for Video - simplified to just show a thumbnail
+// Videos will play in the lightbox with native controls
 function VideoItem({ src }: { src: string }) {
-    const videoRef = useRef<HTMLVideoElement>(null);
-
-    const [isPlaying, setIsPlaying] = useState(false);
-
-    useEffect(() => {
-        const video = videoRef.current;
-        if (!video) return;
-
-        // Intersection Observer for Mobile Autoplay
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        // Play when 50% visible
-                        const playPromise = video.play();
-                        if (playPromise !== undefined) {
-                            playPromise
-                                .then(() => setIsPlaying(true))
-                                .catch(() => {
-                                    // Auto-play was prevented (Low Power Mode or Browser Policy)
-                                    setIsPlaying(false);
-                                });
-                        }
-                    } else {
-                        video.pause();
-                        setIsPlaying(false);
-                    }
-                });
-            },
-            { threshold: 0.5 }
-        );
-
-        observer.observe(video);
-
-        return () => {
-            if (video) observer.unobserve(video);
-        };
-    }, []);
-
-    const handleManualPlay = () => {
-        if (videoRef.current) {
-            if (videoRef.current.paused) {
-                videoRef.current.play();
-                setIsPlaying(true);
-            } else {
-                videoRef.current.pause();
-                setIsPlaying(false);
-            }
-        }
-    };
-
     return (
-        <div style={{ position: 'relative', width: '100%', height: '100%' }} onClick={handleManualPlay}>
+        <div style={{
+            position: 'relative',
+            width: '100%',
+            height: '100%',
+            backgroundColor: '#1a1a1a',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '150px'
+        }}>
+            {/* Video thumbnail - shows first frame or fallback */}
             <video
-                ref={videoRef}
                 src={src}
                 muted
-                loop
                 playsInline
-                preload="none"
-                className={styles.gridVideo}
-                style={{ backgroundColor: '#1a1a1a' }}
-                poster="/assets/logo-v2.png" // Fallback image
+                preload="metadata" /* Load just enough to show first frame */
+                style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover'
+                }}
             />
-            {/* Show Play Button if NOT playing (e.g. Low Power Mode blocks autoplay) */}
-            {!isPlaying && (
-                <div style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    zIndex: 2,
-                    pointerEvents: 'none'
-                }}>
-                    <div style={{
-                        width: '50px',
-                        height: '50px',
-                        backgroundColor: 'rgba(0,0,0,0.5)',
-                        borderRadius: '50%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        border: '1px solid white'
-                    }}>
-                        <span style={{ color: 'white', fontSize: '24px', marginLeft: '4px' }}>▶</span>
-                    </div>
-                </div>
-            )}
         </div>
     );
 }
