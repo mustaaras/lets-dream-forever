@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { promises as fs } from 'fs';
 import path from 'path';
 
+export const dynamic = 'force-dynamic'; // Disable Next.js caching
+export const runtime = 'nodejs'; // Use Node.js runtime for file system access
+
 export async function GET(
     request: NextRequest,
     { params }: { params: Promise<{ path: string[] }> }
@@ -28,6 +31,17 @@ export async function GET(
             ext === '.webm' ? 'video/webm' :
                 ext === '.mov' ? 'video/quicktime' : 'video/mp4';
 
+        // Common headers to bypass Cloudflare cache and enable streaming
+        const commonHeaders = {
+            'Content-Type': contentType,
+            'Accept-Ranges': 'bytes',
+            'Cache-Control': 'no-cache, no-store, must-revalidate', // Bypass CF cache
+            'Pragma': 'no-cache', // Legacy cache bypass
+            'Expires': '0', // Legacy cache bypass
+            'CDN-Cache-Control': 'no-store', // Cloudflare specific
+            'Cloudflare-CDN-Cache-Control': 'no-store', // Cloudflare specific
+        };
+
         if (range) {
             // Parse Range header
             const parts = range.replace(/bytes=/, '').split('-');
@@ -45,11 +59,9 @@ export async function GET(
             return new NextResponse(buffer, {
                 status: 206,
                 headers: {
+                    ...commonHeaders,
                     'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-                    'Accept-Ranges': 'bytes',
                     'Content-Length': chunkSize.toString(),
-                    'Content-Type': contentType,
-                    'Cache-Control': 'public, max-age=31536000',
                 },
             });
         } else {
@@ -59,10 +71,8 @@ export async function GET(
             return new NextResponse(file, {
                 status: 200,
                 headers: {
+                    ...commonHeaders,
                     'Content-Length': fileSize.toString(),
-                    'Content-Type': contentType,
-                    'Accept-Ranges': 'bytes',
-                    'Cache-Control': 'public, max-age=31536000',
                 },
             });
         }
