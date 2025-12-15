@@ -9,7 +9,8 @@ export default function Hero({ dict }: { dict: any }) {
         <section className={styles.hero}>
             <video
                 className={styles.videoBackground}
-                controls
+                autoPlay
+                muted
                 loop
                 playsInline
             >
