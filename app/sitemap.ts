@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = 'https://letsdreamforever.com';
-    const languages = ['en', 'tr', 'ar'];
+    const languages = ['en', 'tr', 'ar', 'ru'];
     const routes = ['', '/portfolio', '/contact', '/faq'];
 
     const sitemap: MetadataRoute.Sitemap = [];

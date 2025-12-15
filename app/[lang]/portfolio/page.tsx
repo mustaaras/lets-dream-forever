@@ -1,7 +1,7 @@
 import { getDictionary } from '@/lib/get-dictionary'
 import Portfolio from '@/components/Portfolio'
 
-export default async function PortfolioPage({ params }: { params: Promise<{ lang: 'en' | 'tr' | 'ar' }> }) {
+export default async function PortfolioPage({ params }: { params: Promise<{ lang: 'en' | 'tr' | 'ar' | 'ru' }> }) {
     const { lang } = await params
     const dictionary = await getDictionary(lang)
 

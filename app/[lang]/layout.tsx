@@ -31,19 +31,22 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     const titles = {
         en: "Lets Dream Forever | Premium Stage Design",
         tr: "Lets Dream Forever | Premium Sahne Tasarımı",
-        ar: "Lets Dream Forever | تصميم المسرح الفاخر"
+        ar: "Lets Dream Forever | تصميم المسرح الفاخر",
+        ru: "Lets Dream Forever | Премиальный дизайн сцены"
     };
 
     const descriptions = {
         en: "Unique stage designs for weddings and exhibitions by Lets Dream Forever.",
         tr: "Lets Dream Forever ile düğünler ve sergiler için benzersiz sahne tasarımları.",
-        ar: "تصميمات مسرح فريدة لحفلات الزفاف والمعارض من Lets Dream Forever."
+        ar: "تصميمات مسرح فريدة لحفلات الزفاف والمعارض من Lets Dream Forever.",
+        ru: "Уникальный дизайн сцен для свадеб и выставок от Lets Dream Forever."
     };
 
     const keywords = {
         en: ["Stage Design", "Wedding Stage", "Exhibition Stand", "Event Design", "Izmir Stage Design", "Luxury Weddings"],
         tr: ["Sahne Tasarımı", "Düğün Sahnesi", "Fuar Standı", "Etkinlik Tasarımı", "İzmir Sahne Tasarımı", "Lüks Düğünler"],
-        ar: ["تصميم المسرح", "مسرح الزفاف", "منصة المعرض", "تصميم الفعاليات", "تصميم مسرح إزمير", "حفلات زفاف فاخرة"]
+        ar: ["تصميم المسرح", "مسرح الزفاف", "منصة المعرض", "تصميم الفعاليات", "تصميم مسرح إزمير", "حفلات زفاف فاخرة"],
+        ru: ["Дизайн сцены", "Свадебная сцена", "Выставочный стенд", "Дизайн мероприятий", "Дизайн сцены в Измире", "Роскошные свадьбы"]
     };
 
     return {
@@ -57,6 +60,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
                 'en': '/en',
                 'tr': '/tr',
                 'ar': '/ar',
+                'ru': '/ru',
             },
         },
         openGraph: {
@@ -94,7 +98,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 }
 
 export async function generateStaticParams() {
-    return [{ lang: "en" }, { lang: "tr" }, { lang: "ar" }];
+    return [{ lang: "en" }, { lang: "tr" }, { lang: "ar" }, { lang: "ru" }];
 }
 
 export default async function RootLayout({

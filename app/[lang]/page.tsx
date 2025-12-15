@@ -5,7 +5,7 @@ import WhatsAppButton from '@/components/WhatsAppButton'
 import Portfolio from '@/components/Portfolio'
 import InstagramFeed from '@/components/InstagramFeed'
 
-export default async function Home({ params }: { params: Promise<{ lang: 'en' | 'tr' | 'ar' }> }) {
+export default async function Home({ params }: { params: Promise<{ lang: 'en' | 'tr' | 'ar' | 'ru' }> }) {
     const { lang } = await params
     const dictionary = await getDictionary(lang)
     return (

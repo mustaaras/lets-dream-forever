@@ -25,6 +25,9 @@ export default function LanguageSwitcher({ currentLang }: { currentLang: string 
             <Link href={redirectedPathName('ar')} className={`${styles.langLink} ${currentLang === 'ar' ? styles.active : ''}`}>
                 AR
             </Link>
+            <Link href={redirectedPathName('ru')} className={`${styles.langLink} ${currentLang === 'ru' ? styles.active : ''}`}>
+                RU
+            </Link>
         </div>
     );
 }
