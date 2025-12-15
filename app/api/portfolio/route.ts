@@ -25,7 +25,7 @@ export async function GET() {
                     // Use random heights for masonry effect if we can't determine dimensions easily
                     // Or let CSS handle aspect ratio
                     width: 600,
-                    height: isVideo ? 800 : 600,
+                    height: isVideo ? 400 : 600,
                 };
             });
 
