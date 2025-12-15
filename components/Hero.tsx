@@ -23,11 +23,21 @@ export default function Hero({ dict }: { dict: any }) {
         if (videoRef.current) {
             videoRef.current.muted = !isMuted;
             setIsMuted(!isMuted);
+            // Ensure video plays if it was paused (e.g. by battery saver)
+            if (videoRef.current.paused) {
+                videoRef.current.play().catch(e => console.log("Play failed on mute toggle:", e));
+            }
+        }
+    };
+
+    const handleHeroClick = () => {
+        if (videoRef.current && videoRef.current.paused) {
+            videoRef.current.play().catch(e => console.log("Play failed on click:", e));
         }
     };
 
     return (
-        <section className={styles.hero}>
+        <section className={styles.hero} onClick={handleHeroClick}>
             <video
                 ref={videoRef}
                 className={styles.videoBackground}
@@ -36,6 +46,7 @@ export default function Hero({ dict }: { dict: any }) {
                 loop
                 playsInline
                 preload="auto"
+                poster="/assets/logo-2.jpg"
             >
                 <source src="/assets/hero-bg.mp4" type="video/mp4" />
             </video>

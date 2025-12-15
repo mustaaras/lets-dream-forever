@@ -130,6 +130,8 @@ export default function Portfolio({ dict, limit, lang = 'en' }: PortfolioProps) 
 function VideoItem({ src }: { src: string }) {
     const videoRef = useRef<HTMLVideoElement>(null);
 
+    const [isPlaying, setIsPlaying] = useState(false);
+
     useEffect(() => {
         const video = videoRef.current;
         if (!video) return;
@@ -142,12 +144,16 @@ function VideoItem({ src }: { src: string }) {
                         // Play when 50% visible
                         const playPromise = video.play();
                         if (playPromise !== undefined) {
-                            playPromise.catch(() => {
-                                // Auto-play was prevented
-                            });
+                            playPromise
+                                .then(() => setIsPlaying(true))
+                                .catch(() => {
+                                    // Auto-play was prevented (Low Power Mode or Browser Policy)
+                                    setIsPlaying(false);
+                                });
                         }
                     } else {
                         video.pause();
+                        setIsPlaying(false);
                     }
                 });
             },
@@ -161,18 +167,55 @@ function VideoItem({ src }: { src: string }) {
         };
     }, []);
 
+    const handleManualPlay = () => {
+        if (videoRef.current) {
+            if (videoRef.current.paused) {
+                videoRef.current.play();
+                setIsPlaying(true);
+            } else {
+                videoRef.current.pause();
+                setIsPlaying(false);
+            }
+        }
+    };
+
     return (
-        <video
-            ref={videoRef}
-            src={src}
-            muted
-            loop
-            playsInline
-            preload="none" /* PREVENTS network congestion on load. Autoplay triggers load on scroll. */
-            className={styles.gridVideo}
-            style={{ backgroundColor: '#202020' }} // Dark gray background to prevent black flash
-            onMouseOver={(e) => e.currentTarget.play()}
-            onMouseOut={(e) => e.currentTarget.pause()}
-        />
+        <div style={{ position: 'relative', width: '100%', height: '100%' }} onClick={handleManualPlay}>
+            <video
+                ref={videoRef}
+                src={src}
+                muted
+                loop
+                playsInline
+                preload="none"
+                className={styles.gridVideo}
+                style={{ backgroundColor: '#1a1a1a' }}
+                poster="/assets/logo-v2.png" // Fallback image
+            />
+            {/* Show Play Button if NOT playing (e.g. Low Power Mode blocks autoplay) */}
+            {!isPlaying && (
+                <div style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: 2,
+                    pointerEvents: 'none'
+                }}>
+                    <div style={{
+                        width: '50px',
+                        height: '50px',
+                        backgroundColor: 'rgba(0,0,0,0.5)',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        border: '1px solid white'
+                    }}>
+                        <span style={{ color: 'white', fontSize: '24px', marginLeft: '4px' }}>▶</span>
+                    </div>
+                </div>
+            )}
+        </div>
     );
 }
