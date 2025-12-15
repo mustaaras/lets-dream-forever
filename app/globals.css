@@ -1,6 +1,7 @@
 :root {
   --font-heading: 'Playfair Display', serif;
   --font-body: 'Montserrat', sans-serif;
+  --font-script: 'Great Vibes', cursive;
 
   /* Palette extracted/inspired by logos */
   --color-gold: #c6a664;

@@ -54,7 +54,7 @@
 }
 
 .logoScript {
-    font-family: 'Great Vibes', cursive;
+    font-family: var(--font-script);
     font-size: 5rem;
     font-weight: 400;
     background: linear-gradient(135deg, #d4af37 0%, #c6a664 50%, #f0d77b 100%);
@@ -65,7 +65,7 @@
 }
 
 .logoSerif {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-heading);
     font-size: 2.5rem;
     font-weight: 400;
     letter-spacing: 0.4em;
