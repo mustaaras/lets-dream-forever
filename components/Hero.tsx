@@ -46,7 +46,6 @@ export default function Hero({ dict }: { dict: any }) {
                 loop
                 playsInline
                 preload="auto"
-                poster="/assets/logo-2.jpg"
             >
                 <source src="/assets/hero-bg.mp4" type="video/mp4" />
             </video>
