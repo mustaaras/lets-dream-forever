@@ -131,9 +131,12 @@ export default function Portfolio({ dict, limit, lang = 'en' }: PortfolioProps) 
 
 // Simplest possible video component - just a video tag with controls
 function VideoItem({ src }: { src: string }) {
+    // Convert /assets/portfolio/filename.mp4 to /api/video/portfolio/filename.mp4
+    const streamingSrc = src.replace('/assets/', '/api/video/');
+
     return (
         <video
-            src={src}
+            src={streamingSrc}
             controls
             playsInline
             style={{

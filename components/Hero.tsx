@@ -21,7 +21,7 @@ export default function Hero({ dict }: { dict: any }) {
                 loop
                 playsInline
             >
-                <source src="/assets/hero-bg.mp4" type="video/mp4" />
+                <source src="/api/video/hero-bg.mp4" type="video/mp4" />
             </video>
             <div className={styles.videoOverlay}></div>
             <div className={styles.content}>
