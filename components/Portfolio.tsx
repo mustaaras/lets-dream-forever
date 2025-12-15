@@ -66,23 +66,26 @@ export default function Portfolio({ dict, limit, lang = 'en' }: PortfolioProps) 
                         <div
                             key={item.id}
                             className={styles.item}
-                            onClick={() => setSelectedItem(item)}
+                            // Only open lightbox for images
+                            onClick={item.type === 'image' ? () => setSelectedItem(item) : undefined}
+                            style={{ cursor: item.type === 'image' ? 'pointer' : 'default' }}
                         >
                             {item.type === 'video' ? (
                                 <VideoItem src={item.src} />
                             ) : (
-                                <Image
-                                    src={item.src}
-                                    alt={item.alt}
-                                    width={item.width}
-                                    height={item.height}
-                                    style={{ width: '100%', height: 'auto', display: 'block' }}
-                                />
+                                <>
+                                    <Image
+                                        src={item.src}
+                                        alt={item.alt}
+                                        width={item.width}
+                                        height={item.height}
+                                        style={{ width: '100%', height: 'auto', display: 'block' }}
+                                    />
+                                    <div className={styles.overlay}>
+                                        <span className={styles.zoomIcon}>⊕</span>
+                                    </div>
+                                </>
                             )}
-
-                            <div className={styles.overlay}>
-                                <span className={styles.zoomIcon}>{item.type === 'video' ? '▶' : '⊕'}</span>
-                            </div>
                         </div>
                     ))}
                 </div>
