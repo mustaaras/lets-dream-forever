@@ -126,32 +126,56 @@ export default function Portfolio({ dict, limit, lang = 'en' }: PortfolioProps) 
     );
 }
 
-// Sub-component for Video - simplified to just show a thumbnail
-// Videos will play in the lightbox with native controls
+// Sub-component for Video - displays a styled placeholder
+// Safari doesn't reliably show video thumbnails, so we show a branded placeholder
+// Videos play in the lightbox with native controls
 function VideoItem({ src }: { src: string }) {
+    // Use the video filename as display text
+    const filename = src.split('/').pop()?.replace('.mp4', '') || 'Video';
+
     return (
         <div style={{
             position: 'relative',
             width: '100%',
             height: '100%',
-            backgroundColor: '#1a1a1a',
+            background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
             display: 'flex',
+            flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            minHeight: '150px'
+            minHeight: '200px',
+            padding: '1rem'
         }}>
-            {/* Video thumbnail - shows first frame or fallback */}
-            <video
-                src={src}
-                muted
-                playsInline
-                preload="metadata" /* Load just enough to show first frame */
-                style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover'
-                }}
-            />
+            {/* Play Circle */}
+            <div style={{
+                width: '60px',
+                height: '60px',
+                borderRadius: '50%',
+                backgroundColor: 'rgba(198, 166, 100, 0.9)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '0.5rem'
+            }}>
+                <span style={{
+                    color: '#1a1a1a',
+                    fontSize: '28px',
+                    marginLeft: '4px'
+                }}>▶</span>
+            </div>
+            {/* Video Label */}
+            <span style={{
+                color: '#c6a664',
+                fontSize: '0.75rem',
+                textAlign: 'center',
+                opacity: 0.8,
+                maxWidth: '100%',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap'
+            }}>
+                Video
+            </span>
         </div>
     );
 }
