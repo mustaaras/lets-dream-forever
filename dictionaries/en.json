@@ -4,7 +4,8 @@
     "gallery": "Gallery",
     "about": "About",
     "portfolio": "Portfolio",
-    "contact": "Contact"
+    "contact": "Contact",
+    "faq": "FAQ"
   },
   "hero": {
     "title": "Lets Dream Forever",
@@ -24,8 +25,24 @@
     "title": "Latest Instagram Posts",
     "view_on_instagram": "View on Instagram"
   },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Get in Touch",
+    "text": "You can call us directly or leave a WhatsApp message, and we will call you back ASAP.",
+    "phone": "Call Directly",
+    "whatsapp": "Message on WhatsApp"
+  },
   "footer": {
     "contact_us": "Contact Us",
     "rights": "All rights reserved."
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "q1": "Which cities do you serve?",
+    "a1": "We primarily serve Izmir and surrounding cities. However, depending on the project size and requirements, we are available to provide services in other cities and countries as well.",
+    "q2": "Do you offer custom stage designs?",
+    "a2": "Yes, every stage we design is unique and tailored to the specific needs of your event.",
+    "q3": "How early should we book?",
+    "a3": "We recommend booking at least 1-2 months in advance to ensure availability and proper planning."
   }
 }

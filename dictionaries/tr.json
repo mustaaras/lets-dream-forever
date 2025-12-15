@@ -3,7 +3,8 @@
         "home": "Ana Sayfa",
         "about": "Hakkımızda",
         "portfolio": "Portfolyo",
-        "contact": "İletişim"
+        "contact": "İletişim",
+        "faq": "S.S.S."
     },
     "hero": {
         "title": "Hayallerini Sonsuz Kıl",
@@ -23,8 +24,24 @@
         "title": "Son Instagram Gönderileri",
         "view_on_instagram": "Instagram'da Görüntüle"
     },
+    "contact": {
+        "title": "İletişim",
+        "subtitle": "Bize Ulaşın",
+        "text": "Bizi doğrudan arayabilir veya WhatsApp üzerinden mesaj bırakabilirsiniz; size en kısa sürede geri dönüş yapacağız.",
+        "phone": "Hemen Ara",
+        "whatsapp": "WhatsApp Mesajı"
+    },
     "footer": {
         "contact_us": "Bize Ulaşın",
         "rights": "Tüm hakları saklıdır."
+    },
+    "faq": {
+        "title": "Sıkça Sorulan Sorular",
+        "q1": "Hangi şehirlerde hizmet veriyorsunuz?",
+        "a1": "Öncelikli olarak İzmir ve çevre illerde hizmet veriyoruz. Ancak proje büyüklüğü ve gereksinimlerine bağlı olarak, diğer şehirlerde ve ülkelerde de hizmet sunabiliriz.",
+        "q2": "Özel sahne tasarımı yapıyor musunuz?",
+        "a2": "Evet, tasarladığımız her sahne etkinliğinizin özel ihtiyaçlarına göre benzersiz bir şekilde hazırlanır.",
+        "q3": "Ne kadar önceden rezervasyon yapmalıyız?",
+        "a3": "Müsaitlik ve doğru planlama için en az 1-2 ay önceden rezervasyon yapmanızı öneririz."
     }
 }

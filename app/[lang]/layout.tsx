@@ -40,11 +40,55 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
         ar: "تصميمات مسرح فريدة لحفلات الزفاف والمعارض من Lets Dream Forever."
     };
 
+    const keywords = {
+        en: ["Stage Design", "Wedding Stage", "Exhibition Stand", "Event Design", "Izmir Stage Design", "Luxury Weddings"],
+        tr: ["Sahne Tasarımı", "Düğün Sahnesi", "Fuar Standı", "Etkinlik Tasarımı", "İzmir Sahne Tasarımı", "Lüks Düğünler"],
+        ar: ["تصميم المسرح", "مسرح الزفاف", "منصة المعرض", "تصميم الفعاليات", "تصميم مسرح إزمير", "حفلات زفاف فاخرة"]
+    };
+
     return {
+        metadataBase: new URL('https://letsdreamforever.com'),
         title: titles[lang as keyof typeof titles] || titles.en,
         description: descriptions[lang as keyof typeof descriptions] || descriptions.en,
+        keywords: keywords[lang as keyof typeof keywords] || keywords.en,
+        alternates: {
+            canonical: `/${lang}`,
+            languages: {
+                'en': '/en',
+                'tr': '/tr',
+                'ar': '/ar',
+            },
+        },
+        openGraph: {
+            title: titles[lang as keyof typeof titles] || titles.en,
+            description: descriptions[lang as keyof typeof descriptions] || descriptions.en,
+            url: `/${lang}`,
+            siteName: 'Lets Dream Forever',
+            locale: lang,
+            type: 'website',
+            images: [
+                {
+                    url: '/assets/logo-v2.png', // Fallback or specific OG image
+                    width: 1200,
+                    height: 630,
+                    alt: titles[lang as keyof typeof titles],
+                },
+            ],
+        },
+        robots: {
+            index: true,
+            follow: true,
+            googleBot: {
+                index: true,
+                follow: true,
+                'max-video-preview': -1,
+                'max-image-preview': 'large',
+                'max-snippet': -1,
+            },
+        },
         icons: {
             icon: "/icon.png",
+            apple: "/icon.png",
         },
     };
 }

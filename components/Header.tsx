@@ -43,8 +43,11 @@ export default function Header({ lang, dict }: { lang: string, dict: any }) {
                 <Link href={`/${lang}/portfolio`} className={styles.navLink}>
                     {dict.navigation.portfolio}
                 </Link>
-                <Link href={`/${lang}/#contact`} className={styles.navLink}>
+                <Link href={`/${lang}/contact`} className={styles.navLink}>
                     {dict.navigation.contact}
+                </Link>
+                <Link href={`/${lang}/faq`} className={styles.navLink}>
+                    {dict.navigation.faq}
                 </Link>
                 <LanguageSwitcher currentLang={lang} />
             </nav>
@@ -75,8 +78,11 @@ export default function Header({ lang, dict }: { lang: string, dict: any }) {
                 <Link href={`/${lang}/portfolio`} className={styles.mobileNavLink} onClick={closeMenu}>
                     {dict.navigation.portfolio}
                 </Link>
-                <Link href={`/${lang}/#contact`} className={styles.mobileNavLink} onClick={closeMenu}>
+                <Link href={`/${lang}/contact`} className={styles.mobileNavLink} onClick={closeMenu}>
                     {dict.navigation.contact}
+                </Link>
+                <Link href={`/${lang}/faq`} className={styles.mobileNavLink} onClick={closeMenu}>
+                    {dict.navigation.faq}
                 </Link>
                 <div style={{ marginTop: '2rem' }}>
                     <LanguageSwitcher currentLang={lang} />
