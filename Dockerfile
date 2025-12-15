@@ -34,6 +34,9 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
+# Debug: List portfolio files to verify they are present in builder
+RUN ls -la public/assets/portfolio
+
 # Production image, copy all the files and run next
 FROM base AS runner
 WORKDIR /app
