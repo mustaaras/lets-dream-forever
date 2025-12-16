@@ -66,12 +66,16 @@ export default function Portfolio({ dict, limit, lang = 'en' }: PortfolioProps) 
                         <div
                             key={item.id}
                             className={styles.item}
-                            // Only open lightbox for images
-                            onClick={item.type === 'image' ? () => setSelectedItem(item) : undefined}
-                            style={{ cursor: item.type === 'image' ? 'pointer' : 'default' }}
+                            onClick={() => setSelectedItem(item)}
+                            style={{ cursor: 'pointer' }}
                         >
                             {item.type === 'video' ? (
-                                <VideoItem src={item.src} />
+                                <>
+                                    <VideoItem src={item.src} />
+                                    <div className={styles.overlay}>
+                                        <span className={styles.playIcon}>▶</span>
+                                    </div>
+                                </>
                             ) : (
                                 <>
                                     <Image
@@ -106,7 +110,7 @@ export default function Portfolio({ dict, limit, lang = 'en' }: PortfolioProps) 
                         <button className={styles.closeBtn} onClick={() => setSelectedItem(null)}>&times;</button>
                         {selectedItem.type === 'video' ? (
                             <video
-                                src={selectedItem.src}
+                                src={selectedItem.src.replace('/assets/', '/api/video/')}
                                 controls
                                 autoPlay
                                 playsInline
