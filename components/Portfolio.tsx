@@ -129,15 +129,46 @@ export default function Portfolio({ dict, limit, lang = 'en' }: PortfolioProps) 
     );
 }
 
-// Simplest possible video component - just a video tag with controls
+// Video component with scroll-based autoplay using IntersectionObserver
 function VideoItem({ src }: { src: string }) {
+    const videoRef = useRef<HTMLVideoElement>(null);
+
     // Convert /assets/portfolio/filename.mp4 to /api/video/portfolio/filename.mp4
     const streamingSrc = src.replace('/assets/', '/api/video/');
 
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        // Play when 50% visible
+                        video.play().catch(() => {
+                            // Autoplay was prevented - that's okay
+                        });
+                    } else {
+                        video.pause();
+                    }
+                });
+            },
+            { threshold: 0.5 }
+        );
+
+        observer.observe(video);
+
+        return () => {
+            observer.unobserve(video);
+        };
+    }, []);
+
     return (
         <video
+            ref={videoRef}
             src={streamingSrc}
-            controls
+            muted
+            loop
             playsInline
             style={{
                 width: '100%',
