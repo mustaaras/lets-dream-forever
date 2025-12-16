@@ -198,3 +198,33 @@ function VideoItem({ src, onSelect, onPlayingChange }: { src: string, onSelect?:
         />
     );
 }
+
+// Wrapper component to handle overlay state for each video
+function VideoWithOverlay({ src, onSelect }: { src: string, onSelect: () => void }) {
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    return (
+        <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+            <VideoItem
+                src={src}
+                onSelect={onSelect}
+                onPlayingChange={setIsPlaying}
+            />
+            {/* Show overlay only when playing - mimics "Tap to play" (native) then "Tap to open" (custom) */}
+            {isPlaying && (
+                <div className={styles.overlay} style={{ opacity: 1, pointerEvents: 'none' }}>
+                    <span
+                        className={styles.playIcon}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onSelect();
+                        }}
+                        style={{ pointerEvents: 'auto' }}
+                    >
+                        ▶
+                    </span>
+                </div>
+            )}
+        </div>
+    );
+}
