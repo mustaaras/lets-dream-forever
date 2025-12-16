@@ -109,6 +109,14 @@
 
 /* Show overlay icons on mobile without needing hover */
 @media (hover: none) {
+
+    /* Hide custom play button on mobile as per user request */
+    /* Native play button handles usage when paused */
+    /* User can still tap video to open lightbox */
+    .playIcon {
+        display: none !important;
+    }
+
     /* Don't force overlay on mobile video to avoid double play buttons */
     /* Only show it for images or when interacted? */
     /* Actually better to hide it for videos on mobile so native controls shine */
