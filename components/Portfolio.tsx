@@ -71,7 +71,20 @@ export default function Portfolio({ dict, limit, lang = 'en' }: PortfolioProps) 
                             style={{ cursor: item.type === 'image' ? 'pointer' : 'default' }}
                         >
                             {item.type === 'video' ? (
-                                <VideoItem src={item.src} onSelect={() => setSelectedItem(item)} />
+                                <>
+                                    <VideoItem src={item.src} onSelect={() => setSelectedItem(item)} />
+                                    <div className={styles.overlay}>
+                                        <span
+                                            className={styles.playIcon}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setSelectedItem(item);
+                                            }}
+                                        >
+                                            ▶
+                                        </span>
+                                    </div>
+                                </>
                             ) : (
                                 <>
                                     <Image
@@ -129,20 +142,14 @@ export default function Portfolio({ dict, limit, lang = 'en' }: PortfolioProps) 
     );
 }
 
-// Video component - shows poster until tapped, then plays video
-// This approach completely eliminates native play buttons on mobile
-function VideoItem({ src, onSelect }: { src: string; onSelect?: () => void }) {
-    const [isActive, setIsActive] = useState(false);
+// Video component with scroll-based autoplay using IntersectionObserver
+function VideoItem({ src, onSelect }: { src: string, onSelect?: () => void }) {
     const videoRef = useRef<HTMLVideoElement>(null);
-    const containerRef = useRef<HTMLDivElement>(null);
 
     // Convert /assets/portfolio/filename.mp4 to /api/video/portfolio/filename.mp4
     const streamingSrc = src.replace('/assets/', '/api/video/');
 
-    // Handle visibility-based pause (only when video is active/playing)
     useEffect(() => {
-        if (!isActive) return;
-
         const video = videoRef.current;
         if (!video) return;
 
@@ -150,13 +157,16 @@ function VideoItem({ src, onSelect }: { src: string; onSelect?: () => void }) {
             (entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        video.play().catch(() => { });
+                        // Play when 25% visible (earlier preloading)
+                        video.play().catch(() => {
+                            // Autoplay was prevented - that's okay
+                        });
                     } else {
                         video.pause();
                     }
                 });
             },
-            { threshold: 0.25 }
+            { threshold: 0.25 } // Start loading at 25% visibility for smoother experience
         );
 
         observer.observe(video);
@@ -164,97 +174,33 @@ function VideoItem({ src, onSelect }: { src: string; onSelect?: () => void }) {
         return () => {
             observer.unobserve(video);
         };
-    }, [isActive]);
+    }, []);
 
-    // Auto-play when video becomes active
-    useEffect(() => {
-        if (isActive && videoRef.current) {
-            videoRef.current.play().catch(() => { });
-        }
-    }, [isActive]);
-
-    const handleClick = () => {
-        if (!isActive) {
-            // First tap: activate video
-            setIsActive(true);
-        } else {
-            // Second tap: open lightbox
-            if (onSelect) onSelect();
-        }
-    };
-
-    // Show poster/thumbnail until activated
-    if (!isActive) {
-        return (
-            <div
-                ref={containerRef}
-                onClick={handleClick}
-                style={{
-                    width: '100%',
-                    aspectRatio: '9/16', // Assume portrait videos
-                    backgroundColor: '#1a1a1a',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    position: 'relative',
-                }}
-            >
-                {/* Video poster - use video element with poster for first frame */}
-                <video
-                    src={streamingSrc}
-                    preload="metadata"
-                    muted
-                    playsInline
-                    style={{
-                        position: 'absolute',
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        pointerEvents: 'none',
-                    }}
-                />
-                {/* Single play button - no native controls since video won't play until activated */}
-                <div
-                    style={{
-                        position: 'absolute',
-                        width: '60px',
-                        height: '60px',
-                        borderRadius: '50%',
-                        background: 'rgba(0, 0, 0, 0.6)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        paddingLeft: '5px',
-                        backdropFilter: 'blur(4px)',
-                        zIndex: 10,
-                    }}
-                >
-                    <span style={{ fontSize: '2rem', color: 'white' }}>▶</span>
-                </div>
-            </div>
-        );
-    }
-
-    // Active state: real playing video
     return (
         <video
             ref={videoRef}
             src={streamingSrc}
-            preload="auto"
+            preload="metadata" // Load just the first frame for faster initial display
             muted
             loop
             playsInline
-            autoPlay
-            onClick={handleClick}
+            onClick={(e) => {
+                // Allow user to manually start video if autoplay failed (e.g. low power mode)
+                const video = e.currentTarget;
+                if (video.paused) {
+                    video.play().catch(() => { });
+                } else {
+                    // If already playing, open the lightbox
+                    if (onSelect) onSelect();
+                }
+            }}
             style={{
                 width: '100%',
                 height: 'auto',
                 display: 'block',
                 backgroundColor: '#1a1a1a',
-                cursor: 'pointer',
+                cursor: 'pointer'
             }}
         />
     );
 }
-
