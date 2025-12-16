@@ -63,6 +63,17 @@
     object-fit: cover;
 }
 
+/* Hide Safari/iOS native video play button */
+.item video::-webkit-media-controls-start-playback-button,
+.item video::-webkit-media-controls-panel {
+    display: none !important;
+    -webkit-appearance: none;
+}
+
+.item video::-webkit-media-controls {
+    display: none !important;
+}
+
 .item:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
