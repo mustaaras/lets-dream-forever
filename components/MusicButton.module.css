@@ -1,13 +1,13 @@
 .musicButton {
     position: fixed;
-    bottom: 100px;
-    left: 20px;
-    z-index: 999;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1000;
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    border: 2px solid var(--color-gold);
-    background: rgba(0, 0, 0, 0.7);
+    border: none;
+    background: var(--color-gold);
     color: white;
     font-size: 1.4rem;
     cursor: pointer;
@@ -15,20 +15,18 @@
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    backdrop-filter: blur(8px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .musicButton:hover {
-    background: var(--color-gold);
-    color: black;
     transform: scale(1.1);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
 }
 
 @media (max-width: 768px) {
     .musicButton {
-        bottom: 90px;
-        left: 15px;
+        bottom: 1.5rem;
+        right: 1.5rem;
         width: 44px;
         height: 44px;
         font-size: 1.2rem;
