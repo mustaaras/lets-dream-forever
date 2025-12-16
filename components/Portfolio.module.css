@@ -158,8 +158,8 @@
 
 @media (max-width: 768px) {
     .grid {
-        columns: 2 150px;
-        /* Force 2 columns with smaller min-width */
+        columns: 1;
+        /* Single column on mobile for faster loading */
         column-gap: 0.8rem;
     }
 
