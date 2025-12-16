@@ -109,16 +109,14 @@
 
 /* Show overlay icons on mobile without needing hover */
 @media (hover: none) {
-    .overlay {
+    /* Don't force overlay on mobile video to avoid double play buttons */
+    /* Only show it for images or when interacted? */
+    /* Actually better to hide it for videos on mobile so native controls shine */
+
+    /* Keep zoom icon visible for images? */
+    .item:not(:has(video)) .overlay {
         opacity: 1;
         background: transparent;
-        /* Don't darken video on mobile, just show icon */
-    }
-
-    .playIcon {
-        background: rgba(0, 0, 0, 0.6);
-        /* Make icon stand out more */
-        backdrop-filter: blur(4px);
     }
 }
 

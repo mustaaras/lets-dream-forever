@@ -72,7 +72,7 @@ export default function Portfolio({ dict, limit, lang = 'en' }: PortfolioProps) 
                         >
                             {item.type === 'video' ? (
                                 <>
-                                    <VideoItem src={item.src} />
+                                    <VideoItem src={item.src} onSelect={() => setSelectedItem(item)} />
                                     <div className={styles.overlay}>
                                         <span
                                             className={styles.playIcon}
@@ -143,7 +143,7 @@ export default function Portfolio({ dict, limit, lang = 'en' }: PortfolioProps) 
 }
 
 // Video component with scroll-based autoplay using IntersectionObserver
-function VideoItem({ src }: { src: string }) {
+function VideoItem({ src, onSelect }: { src: string, onSelect?: () => void }) {
     const videoRef = useRef<HTMLVideoElement>(null);
 
     // Convert /assets/portfolio/filename.mp4 to /api/video/portfolio/filename.mp4
@@ -186,13 +186,12 @@ function VideoItem({ src }: { src: string }) {
             playsInline
             onClick={(e) => {
                 // Allow user to manually start video if autoplay failed (e.g. low power mode)
-                // This adheres to "autoplay after i touch the screen"
                 const video = e.currentTarget;
                 if (video.paused) {
                     video.play().catch(() => { });
                 } else {
-                    // Optional: allow pausing, or just keep it playing
-                    // video.pause();
+                    // If already playing, open the lightbox
+                    if (onSelect) onSelect();
                 }
             }}
             style={{
