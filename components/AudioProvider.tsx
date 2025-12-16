@@ -54,6 +54,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
                 audioRef.current.pause();
                 setIsPlaying(false);
             } else {
+                audioRef.current.volume = 0.3; // Set volume to 30%
                 audioRef.current.play().then(() => {
                     setIsPlaying(true);
                     setIsMuted(false);
