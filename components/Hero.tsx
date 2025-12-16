@@ -1,13 +1,41 @@
 'use client';
 
+import { useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './Hero.module.css';
 
 export default function Hero({ dict }: { dict: any }) {
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        video.play().catch(() => { });
+                    } else {
+                        video.pause();
+                    }
+                });
+            },
+            { threshold: 0.1 }
+        );
+
+        observer.observe(video);
+
+        return () => {
+            observer.unobserve(video);
+        };
+    }, []);
+
     return (
         <section className={styles.hero}>
             <video
+                ref={videoRef}
                 className={styles.videoBackground}
                 autoPlay
                 muted
@@ -34,4 +62,3 @@ export default function Hero({ dict }: { dict: any }) {
         </section>
     );
 }
-
