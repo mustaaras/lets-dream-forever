@@ -113,8 +113,8 @@ export default async function RootLayout({
     const dict = await getDictionary(lang);
 
     return (
-        <html lang={lang} dir={isRTL ? "rtl" : "ltr"} className={`${montserrat.variable} ${playfair.variable} ${greatVibes.variable}`}>
-            <body>
+        <html lang={lang} dir={isRTL ? "rtl" : "ltr"} className={`${montserrat.variable} ${playfair.variable} ${greatVibes.variable}`} suppressHydrationWarning>
+            <body suppressHydrationWarning>
                 <Header lang={lang} dict={dict} />
                 <main style={{ minHeight: '100vh', paddingTop: '80px' }}>
                     {children}
