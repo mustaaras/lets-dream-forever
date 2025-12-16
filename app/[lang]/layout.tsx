@@ -3,6 +3,8 @@ import { Montserrat, Playfair_Display, Great_Vibes } from "next/font/google"; //
 import "../globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { AudioProvider } from "@/components/AudioProvider";
+import MusicButton from "@/components/MusicButton";
 import { getDictionary } from "@/lib/get-dictionary";
 
 // Font Configurations
@@ -115,11 +117,14 @@ export default async function RootLayout({
     return (
         <html lang={lang} dir={isRTL ? "rtl" : "ltr"} className={`${montserrat.variable} ${playfair.variable} ${greatVibes.variable}`} suppressHydrationWarning>
             <body suppressHydrationWarning>
-                <Header lang={lang} dict={dict} />
-                <main style={{ minHeight: '100vh', paddingTop: '80px' }}>
-                    {children}
-                </main>
-                <Footer dict={dict} />
+                <AudioProvider>
+                    <Header lang={lang} dict={dict} />
+                    <main style={{ minHeight: '100vh', paddingTop: '80px' }}>
+                        {children}
+                    </main>
+                    <Footer dict={dict} />
+                    <MusicButton />
+                </AudioProvider>
             </body>
         </html>
     );
