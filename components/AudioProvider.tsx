@@ -94,10 +94,10 @@ export function AudioProvider({ children }: { children: ReactNode }) {
             {/* Hidden audio element that persists across pages */}
             <audio
                 ref={audioRef}
-                src="/api/video/hero-bg.mp4"
+                src="/assets/background-music.mp3"
                 loop
                 muted={isMuted}
-                preload="metadata"
+                preload="auto"
             />
             {children}
         </AudioContext.Provider>
