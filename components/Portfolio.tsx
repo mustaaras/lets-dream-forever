@@ -184,12 +184,23 @@ function VideoItem({ src }: { src: string }) {
             muted
             loop
             playsInline
+            onClick={(e) => {
+                // Allow user to manually start video if autoplay failed (e.g. low power mode)
+                // This adheres to "autoplay after i touch the screen"
+                const video = e.currentTarget;
+                if (video.paused) {
+                    video.play().catch(() => { });
+                } else {
+                    // Optional: allow pausing, or just keep it playing
+                    // video.pause();
+                }
+            }}
             style={{
                 width: '100%',
                 height: 'auto',
                 display: 'block',
                 backgroundColor: '#1a1a1a',
-                pointerEvents: 'none' // Prevent native interactions (play/pause/controls) on the video itself
+                cursor: 'pointer'
             }}
         />
     );
