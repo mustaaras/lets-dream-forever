@@ -144,7 +144,7 @@ function VideoItem({ src }: { src: string }) {
             (entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        // Play when 50% visible
+                        // Play when 25% visible (earlier preloading)
                         video.play().catch(() => {
                             // Autoplay was prevented - that's okay
                         });
@@ -153,7 +153,7 @@ function VideoItem({ src }: { src: string }) {
                     }
                 });
             },
-            { threshold: 0.5 }
+            { threshold: 0.25 } // Start loading at 25% visibility for smoother experience
         );
 
         observer.observe(video);
@@ -167,6 +167,7 @@ function VideoItem({ src }: { src: string }) {
         <video
             ref={videoRef}
             src={streamingSrc}
+            preload="metadata" // Load just the first frame for faster initial display
             muted
             loop
             playsInline
