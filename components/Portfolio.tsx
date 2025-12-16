@@ -71,20 +71,10 @@ export default function Portfolio({ dict, limit, lang = 'en' }: PortfolioProps) 
                             style={{ cursor: item.type === 'image' ? 'pointer' : 'default' }}
                         >
                             {item.type === 'video' ? (
-                                <>
-                                    <VideoItem src={item.src} onSelect={() => setSelectedItem(item)} />
-                                    <div className={styles.overlay}>
-                                        <span
-                                            className={styles.playIcon}
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                setSelectedItem(item);
-                                            }}
-                                        >
-                                            ▶
-                                        </span>
-                                    </div>
-                                </>
+                                <VideoWithOverlay
+                                    src={item.src}
+                                    onSelect={() => setSelectedItem(item)}
+                                />
                             ) : (
                                 <>
                                     <Image
@@ -143,7 +133,7 @@ export default function Portfolio({ dict, limit, lang = 'en' }: PortfolioProps) 
 }
 
 // Video component with scroll-based autoplay using IntersectionObserver
-function VideoItem({ src, onSelect }: { src: string, onSelect?: () => void }) {
+function VideoItem({ src, onSelect, onPlayingChange }: { src: string, onSelect?: () => void, onPlayingChange?: (isPlaying: boolean) => void }) {
     const videoRef = useRef<HTMLVideoElement>(null);
 
     // Convert /assets/portfolio/filename.mp4 to /api/video/portfolio/filename.mp4
@@ -153,25 +143,31 @@ function VideoItem({ src, onSelect }: { src: string, onSelect?: () => void }) {
         const video = videoRef.current;
         if (!video) return;
 
+        const updatePlayingState = () => {
+            if (onPlayingChange) onPlayingChange(!video.paused);
+        };
+
+        video.addEventListener('play', updatePlayingState);
+        video.addEventListener('pause', updatePlayingState);
+
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        // Play when 25% visible (earlier preloading)
-                        video.play().catch(() => {
-                            // Autoplay was prevented - that's okay
-                        });
+                        video.play().catch(() => { });
                     } else {
                         video.pause();
                     }
                 });
             },
-            { threshold: 0.25 } // Start loading at 25% visibility for smoother experience
+            { threshold: 0.25 }
         );
 
         observer.observe(video);
 
         return () => {
+            video.removeEventListener('play', updatePlayingState);
+            video.removeEventListener('pause', updatePlayingState);
             observer.unobserve(video);
         };
     }, []);
@@ -180,17 +176,15 @@ function VideoItem({ src, onSelect }: { src: string, onSelect?: () => void }) {
         <video
             ref={videoRef}
             src={streamingSrc}
-            preload="metadata" // Load just the first frame for faster initial display
+            preload="metadata"
             muted
             loop
             playsInline
             onClick={(e) => {
-                // Allow user to manually start video if autoplay failed (e.g. low power mode)
                 const video = e.currentTarget;
                 if (video.paused) {
                     video.play().catch(() => { });
                 } else {
-                    // If already playing, open the lightbox
                     if (onSelect) onSelect();
                 }
             }}
