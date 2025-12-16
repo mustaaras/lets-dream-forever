@@ -103,6 +103,23 @@
     align-items: center;
     justify-content: center;
     transition: opacity 0.3s ease;
+    pointer-events: none;
+    /* Allow clicks to pass through overlay background */
+}
+
+/* Show overlay icons on mobile without needing hover */
+@media (hover: none) {
+    .overlay {
+        opacity: 1;
+        background: transparent;
+        /* Don't darken video on mobile, just show icon */
+    }
+
+    .playIcon {
+        background: rgba(0, 0, 0, 0.6);
+        /* Make icon stand out more */
+        backdrop-filter: blur(4px);
+    }
 }
 
 .item:hover .overlay {
@@ -113,6 +130,8 @@
     font-size: 2rem;
     color: white;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+    pointer-events: auto;
+    /* Enable clicking on icon */
 }
 
 .playIcon {
@@ -128,6 +147,14 @@
     justify-content: center;
     padding-left: 5px;
     /* Optical centering for play icon */
+    pointer-events: auto;
+    /* Enable clicking on icon */
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.playIcon:active {
+    transform: scale(0.95);
 }
 
 /* Lightbox */

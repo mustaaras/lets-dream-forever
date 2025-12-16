@@ -66,14 +66,23 @@ export default function Portfolio({ dict, limit, lang = 'en' }: PortfolioProps) 
                         <div
                             key={item.id}
                             className={styles.item}
-                            onClick={() => setSelectedItem(item)}
-                            style={{ cursor: 'pointer' }}
+                            // Only clickable for images at container level (optional, or move to icon too)
+                            onClick={item.type === 'image' ? () => setSelectedItem(item) : undefined}
+                            style={{ cursor: item.type === 'image' ? 'pointer' : 'default' }}
                         >
                             {item.type === 'video' ? (
                                 <>
                                     <VideoItem src={item.src} />
                                     <div className={styles.overlay}>
-                                        <span className={styles.playIcon}>▶</span>
+                                        <span
+                                            className={styles.playIcon}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setSelectedItem(item);
+                                            }}
+                                        >
+                                            ▶
+                                        </span>
                                     </div>
                                 </>
                             ) : (
