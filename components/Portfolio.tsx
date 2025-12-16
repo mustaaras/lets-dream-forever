@@ -188,7 +188,8 @@ function VideoItem({ src }: { src: string }) {
                 width: '100%',
                 height: 'auto',
                 display: 'block',
-                backgroundColor: '#1a1a1a'
+                backgroundColor: '#1a1a1a',
+                pointerEvents: 'none' // Prevent native interactions (play/pause/controls) on the video itself
             }}
         />
     );
