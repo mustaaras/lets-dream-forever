@@ -17,7 +17,6 @@ export default function Hero({ dict }: { dict: any }) {
                 muted
                 loop
                 playsInline
-                poster="/assets/hero-poster.jpg"
                 preload="auto"
             >
                 {/* Use the streaming API for the hero bg - it handles 206 Partial Content (chunked streaming) better for mobile than direct asset serving */}
