@@ -21,34 +21,31 @@ export default function InstagramFeed({ dict }: { dict: any }) {
     const BEHOLD_URL = process.env.NEXT_PUBLIC_BEHOLD_URL;
 
     useEffect(() => {
-        console.log('InstagramFeed: BEHOLD_URL is', BEHOLD_URL);
         if (!BEHOLD_URL) {
-            console.log('InstagramFeed: No BEHOLD_URL found, loading placeholders');
             setLoading(false);
             return;
         }
 
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                fetchFeed();
+                observer.disconnect();
+            }
+        }, { rootMargin: '200px' });
+
+        const element = document.getElementById('instagram-feed');
+        if (element) observer.observe(element);
+
         async function fetchFeed() {
             try {
-                console.log('InstagramFeed: Fetching from', BEHOLD_URL);
                 const response = await fetch(BEHOLD_URL!);
                 if (response.ok) {
                     const data = await response.json();
-                    console.log('InstagramFeed: Fetched data', data);
-
-                    // Handle Behold.so "Profile" JSON format which has a 'posts' array
                     if (data && data.posts && Array.isArray(data.posts)) {
                         setPosts(data.posts.slice(0, 6));
-                    }
-                    // Handle direct array format
-                    else if (Array.isArray(data)) {
+                    } else if (Array.isArray(data)) {
                         setPosts(data.slice(0, 6));
-                    } else {
-                        console.error('InstagramFeed: Unexpected data format', data);
-                        setPosts([]);
                     }
-                } else {
-                    console.error('InstagramFeed: Fetch failed', response.status, response.statusText);
                 }
             } catch (error) {
                 console.error('Failed to fetch Instagram feed:', error);
@@ -57,7 +54,7 @@ export default function InstagramFeed({ dict }: { dict: any }) {
             }
         }
 
-        fetchFeed();
+        return () => observer.disconnect();
     }, [BEHOLD_URL]);
 
     // Fallback items if no API or empty
@@ -65,7 +62,7 @@ export default function InstagramFeed({ dict }: { dict: any }) {
     const displayItems = posts.length > 0 ? posts : placeholderItems;
 
     return (
-        <section className={styles.feed}>
+        <section className={styles.feed} id="instagram-feed">
             <div className={styles.header}>
                 <h2 className={styles.title}>{dict.gallery.title || dict.navigation.gallery}</h2>
                 <Link href="https://www.instagram.com/lets.dream.forever/" target="_blank" className={styles.handle}>

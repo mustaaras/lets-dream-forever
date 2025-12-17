@@ -11,7 +11,6 @@ export default async function Home({ params }: { params: Promise<{ lang: 'en' | 
         <>
             <Hero dict={dictionary} />
             <About dict={dictionary} />
-            <Portfolio dict={dictionary} limit={6} lang={lang} />
             <InstagramFeed dict={dictionary} />
         </>
     )

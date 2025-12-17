@@ -82,6 +82,8 @@ export default function Portfolio({ dict, limit, lang = 'en' }: PortfolioProps) 
                                         alt={item.alt}
                                         width={item.width}
                                         height={item.height}
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                        priority={items.indexOf(item) < 2}
                                         style={{ width: '100%', height: 'auto', display: 'block' }}
                                     />
                                     <div className={styles.overlay}>

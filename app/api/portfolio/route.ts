@@ -66,7 +66,14 @@ export async function GET() {
         // Combine: featured first, then interleaved rest
         const items = [...featured, ...interleaved];
 
-        return NextResponse.json({ items });
+        return NextResponse.json(
+            { items },
+            {
+                headers: {
+                    'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=59',
+                }
+            }
+        );
     } catch (error) {
         return NextResponse.json({ error: 'Failed to load portfolio' }, { status: 500 });
     }
