@@ -8,28 +8,13 @@ import styles from './Hero.module.css';
 export default function Hero({ dict }: { dict: any }) {
     const videoRef = useRef<HTMLVideoElement>(null);
 
+    // Ensure video plays on mount as soon as it's ready
     useEffect(() => {
-        const video = videoRef.current;
-        if (!video) return;
-
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        video.play().catch(() => { });
-                    } else {
-                        video.pause();
-                    }
-                });
-            },
-            { threshold: 0.1 }
-        );
-
-        observer.observe(video);
-
-        return () => {
-            observer.unobserve(video);
-        };
+        if (videoRef.current) {
+            videoRef.current.play().catch(() => {
+                // Autoplay might be blocked by browser/low-power mode
+            });
+        }
     }, []);
 
     return (
@@ -41,8 +26,11 @@ export default function Hero({ dict }: { dict: any }) {
                 muted
                 loop
                 playsInline
+                poster="/assets/hero-poster.png"
+                preload="auto"
             >
-                <source src="/api/video/hero-bg.mp4" type="video/mp4" />
+                {/* Use direct assets path for the hero bg to leverage CDN edge caching (faster than custom API) */}
+                <source src="/assets/hero-bg.mp4" type="video/mp4" />
             </video>
             <div className={styles.videoOverlay}></div>
             <div className={styles.content}>
