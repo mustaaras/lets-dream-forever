@@ -8,6 +8,29 @@ import styles from './Hero.module.css';
 export default function Hero({ dict }: { dict: any }) {
     const videoRef = useRef<HTMLVideoElement>(null);
 
+    // Ensure video plays on first visit by listening for canplay event
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        const handleCanPlay = () => {
+            video.play().catch(() => {
+                // Autoplay blocked - that's okay, user can interact
+            });
+        };
+
+        // If video is already ready, play immediately
+        if (video.readyState >= 3) {
+            handleCanPlay();
+        } else {
+            video.addEventListener('canplay', handleCanPlay);
+        }
+
+        return () => {
+            video.removeEventListener('canplay', handleCanPlay);
+        };
+    }, []);
+
     return (
         <section className={styles.hero}>
             <video

@@ -167,9 +167,26 @@ function VideoItem({ src, onSelect, onPlayingChange }: { src: string, onSelect?:
 
         observer.observe(video);
 
+        // Manually trigger initial play attempt when video is ready
+        const handleCanPlay = () => {
+            // Check if video is currently visible
+            const rect = video.getBoundingClientRect();
+            const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+            if (isVisible) {
+                video.play().catch(() => { });
+            }
+        };
+
+        if (video.readyState >= 3) {
+            handleCanPlay();
+        } else {
+            video.addEventListener('canplay', handleCanPlay);
+        }
+
         return () => {
             video.removeEventListener('play', updatePlayingState);
             video.removeEventListener('pause', updatePlayingState);
+            video.removeEventListener('canplay', handleCanPlay);
             observer.unobserve(video);
         };
     }, []);
