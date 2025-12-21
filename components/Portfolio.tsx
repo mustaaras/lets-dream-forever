@@ -134,47 +134,76 @@ export default function Portfolio({ dict, limit, lang = 'en' }: PortfolioProps) 
     );
 }
 
-// Video component with scroll-based autoplay using IntersectionObserver
+// Video component with poster image lazy loading - shows thumbnail instantly, loads video on scroll
 function VideoItem({ src, onSelect, onPlayingChange }: { src: string, onSelect?: () => void, onPlayingChange?: (isPlaying: boolean) => void }) {
     const videoRef = useRef<HTMLVideoElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [isVisible, setIsVisible] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(false);
 
     // Convert /assets/portfolio/filename.mp4 to /api/video/portfolio/filename.mp4
     const streamingSrc = src.replace('/assets/', '/api/video/');
 
+    // Generate poster image path from video path
+    // e.g., /assets/portfolio/20240226_232023.mp4 -> /assets/posters/20240226_232023.jpg
+    const filename = src.split('/').pop()?.replace(/\.(mp4|webm|mov)$/i, '.jpg') || '';
+    const posterSrc = `/assets/posters/${filename}`;
+
+    // Observe when video container enters viewport
     useEffect(() => {
-        const video = videoRef.current;
-        if (!video) return;
-
-        const updatePlayingState = () => {
-            if (onPlayingChange) onPlayingChange(!video.paused);
-        };
-
-        video.addEventListener('play', updatePlayingState);
-        video.addEventListener('pause', updatePlayingState);
+        const container = containerRef.current;
+        if (!container) return;
 
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        video.play().catch(() => { });
-                    } else {
-                        video.pause();
+                        setIsVisible(true);
+                        // Once visible, we don't need to observe anymore
+                        observer.unobserve(container);
                     }
                 });
             },
-            { threshold: 0.25 }
+            {
+                threshold: 0.1,
+                rootMargin: '200px' // Start loading 200px before visible for smoother experience
+            }
         );
 
-        observer.observe(video);
+        observer.observe(container);
 
-        // Manually trigger initial play attempt when video is ready
+        return () => observer.disconnect();
+    }, []);
+
+    // Handle video loading and playback once visible
+    useEffect(() => {
+        if (!isVisible) return;
+
+        const video = videoRef.current;
+        if (!video) return;
+
+        const handleLoadedData = () => {
+            setIsLoaded(true);
+        };
+
+        const handlePlay = () => {
+            setIsPlaying(true);
+            if (onPlayingChange) onPlayingChange(true);
+        };
+
+        const handlePause = () => {
+            setIsPlaying(false);
+            if (onPlayingChange) onPlayingChange(false);
+        };
+
+        video.addEventListener('loadeddata', handleLoadedData);
+        video.addEventListener('play', handlePlay);
+        video.addEventListener('pause', handlePause);
+
+        // Auto-play when video is ready
         const handleCanPlay = () => {
-            // Check if video is currently visible
-            const rect = video.getBoundingClientRect();
-            const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-            if (isVisible) {
-                video.play().catch(() => { });
-            }
+            video.play().catch(() => { });
         };
 
         if (video.readyState >= 3) {
@@ -183,38 +212,112 @@ function VideoItem({ src, onSelect, onPlayingChange }: { src: string, onSelect?:
             video.addEventListener('canplay', handleCanPlay);
         }
 
+        // Pause when out of view
+        const pauseObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) {
+                        video.pause();
+                    } else if (entry.isIntersecting && isLoaded) {
+                        video.play().catch(() => { });
+                    }
+                });
+            },
+            { threshold: 0.25 }
+        );
+
+        pauseObserver.observe(video);
+
         return () => {
-            video.removeEventListener('play', updatePlayingState);
-            video.removeEventListener('pause', updatePlayingState);
+            video.removeEventListener('loadeddata', handleLoadedData);
+            video.removeEventListener('play', handlePlay);
+            video.removeEventListener('pause', handlePause);
             video.removeEventListener('canplay', handleCanPlay);
-            observer.unobserve(video);
+            pauseObserver.disconnect();
         };
-    }, []);
+    }, [isVisible, isLoaded, onPlayingChange]);
 
     return (
-        <video
-            ref={videoRef}
-            src={streamingSrc}
-            preload="metadata"
-            muted
-            loop
-            playsInline
-            onClick={(e) => {
-                const video = e.currentTarget;
-                if (video.paused) {
-                    video.play().catch(() => { });
-                } else {
-                    if (onSelect) onSelect();
-                }
-            }}
+        <div
+            ref={containerRef}
             style={{
+                position: 'relative',
                 width: '100%',
-                height: 'auto',
-                display: 'block',
+                aspectRatio: '16/9', // Landscape video aspect ratio (matches actual videos)
                 backgroundColor: '#1a1a1a',
-                cursor: 'pointer'
+                overflow: 'hidden'
             }}
-        />
+        >
+            {/* Poster image - shows instantly before video loads */}
+            <img
+                src={posterSrc}
+                alt="Video thumbnail"
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    opacity: isLoaded && isPlaying ? 0 : 1,
+                    transition: 'opacity 0.3s ease'
+                }}
+            />
+
+            {/* Play button overlay on poster */}
+            {!isPlaying && (
+                <div style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: '60px',
+                    height: '60px',
+                    borderRadius: '50%',
+                    backgroundColor: 'rgba(0,0,0,0.6)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '24px',
+                    color: 'white',
+                    pointerEvents: 'none'
+                }}>
+                    {isVisible && !isLoaded ? '⏳' : '▶'}
+                </div>
+            )}
+
+            {/* Only render video element when visible to save bandwidth */}
+            {isVisible && (
+                <video
+                    ref={videoRef}
+                    src={streamingSrc}
+                    poster={posterSrc}
+                    preload="auto"
+                    muted
+                    loop
+                    playsInline
+                    onClick={(e) => {
+                        const video = e.currentTarget;
+                        if (video.paused) {
+                            video.play().catch(() => { });
+                        } else {
+                            if (onSelect) onSelect();
+                        }
+                    }}
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        cursor: 'pointer',
+                        opacity: isLoaded ? 1 : 0,
+                        transition: 'opacity 0.3s ease'
+                    }}
+                />
+            )}
+        </div>
     );
 }
 

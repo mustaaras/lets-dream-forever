@@ -217,9 +217,13 @@
 
 @media (max-width: 768px) {
     .grid {
-        columns: 1;
-        /* Single column on mobile for faster loading */
-        column-gap: 0.8rem;
+        columns: 2;
+        /* Two columns on mobile - thumbnails keep it data-efficient */
+        column-gap: 0.5rem;
+    }
+
+    .item {
+        margin-bottom: 0.5rem;
     }
 
     .title {
