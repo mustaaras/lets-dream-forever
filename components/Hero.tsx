@@ -8,26 +8,24 @@ import styles from './Hero.module.css';
 export default function Hero({ dict }: { dict: any }) {
     const videoRef = useRef<HTMLVideoElement>(null);
 
-    // Ensure video plays on first visit by listening for canplay event
     useEffect(() => {
         const video = videoRef.current;
         if (!video) return;
 
-        const handleCanPlay = () => {
-            video.play().catch(() => {
-                // Autoplay blocked - that's okay, user can interact
-            });
+        // Simple play attempt when video can play
+        const tryPlay = () => {
+            video.play().catch(() => { });
         };
 
-        // If video is already ready, play immediately
-        if (video.readyState >= 3) {
-            handleCanPlay();
-        } else {
-            video.addEventListener('canplay', handleCanPlay);
+        video.addEventListener('canplaythrough', tryPlay);
+
+        // Also try immediately if already loaded
+        if (video.readyState >= 4) {
+            tryPlay();
         }
 
         return () => {
-            video.removeEventListener('canplay', handleCanPlay);
+            video.removeEventListener('canplaythrough', tryPlay);
         };
     }, []);
 
@@ -42,8 +40,8 @@ export default function Hero({ dict }: { dict: any }) {
                 playsInline
                 preload="auto"
             >
-                {/* Use the streaming API for the hero bg - it handles 206 Partial Content (chunked streaming) better for mobile than direct asset serving */}
-                <source src="/api/video/hero-bg.mp4" type="video/mp4" />
+                {/* Direct static file - most reliable method */}
+                <source src="/assets/hero-bg.mp4" type="video/mp4" />
             </video>
             <div className={styles.videoOverlay}></div>
             <div className={styles.content}>
