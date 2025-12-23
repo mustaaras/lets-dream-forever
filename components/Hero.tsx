@@ -53,7 +53,7 @@ export default function Hero({ dict }: { dict: any }) {
                 playsInline
                 // @ts-ignore - webkit specific
                 webkit-playsinline="true"
-                preload="metadata"
+                preload="auto"
             />
             <div className={styles.videoOverlay}></div>
             <div className={styles.content}>
