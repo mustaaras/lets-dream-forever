@@ -42,17 +42,15 @@ export default function Hero({ dict }: { dict: any }) {
 
     return (
         <section className={styles.hero}>
-            {/* Using src directly + webkit attributes for iOS autoplay */}
+            {/* Use API streaming route - handles Cloudflare/CDN better */}
             <video
                 ref={videoRef}
                 className={styles.videoBackground}
-                src="/assets/hero-bg.mp4"
+                src="/api/video/hero-bg.mp4"
                 autoPlay
                 muted
                 loop
                 playsInline
-                // @ts-ignore - webkit specific
-                webkit-playsinline="true"
                 preload="auto"
             />
             <div className={styles.videoOverlay}></div>
