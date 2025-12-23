@@ -12,37 +12,49 @@ export default function Hero({ dict }: { dict: any }) {
         const video = videoRef.current;
         if (!video) return;
 
-        // Simple play attempt when video can play
+        // Aggressive play attempts for iOS
         const tryPlay = () => {
-            video.play().catch(() => { });
+            if (video.paused) {
+                video.play().catch(() => { });
+            }
         };
 
+        // Try on multiple events
+        video.addEventListener('loadedmetadata', tryPlay);
+        video.addEventListener('canplay', tryPlay);
         video.addEventListener('canplaythrough', tryPlay);
 
-        // Also try immediately if already loaded
-        if (video.readyState >= 4) {
-            tryPlay();
-        }
+        // Try immediately
+        tryPlay();
+
+        // Also try after a short delay (helps with some browsers)
+        const timer = setTimeout(tryPlay, 100);
+        const timer2 = setTimeout(tryPlay, 500);
 
         return () => {
+            video.removeEventListener('loadedmetadata', tryPlay);
+            video.removeEventListener('canplay', tryPlay);
             video.removeEventListener('canplaythrough', tryPlay);
+            clearTimeout(timer);
+            clearTimeout(timer2);
         };
     }, []);
 
     return (
         <section className={styles.hero}>
+            {/* Using src directly + webkit attributes for iOS autoplay */}
             <video
                 ref={videoRef}
                 className={styles.videoBackground}
+                src="/assets/hero-bg.mp4"
                 autoPlay
                 muted
                 loop
                 playsInline
-                preload="auto"
-            >
-                {/* Direct static file - most reliable method */}
-                <source src="/assets/hero-bg.mp4" type="video/mp4" />
-            </video>
+                // @ts-ignore - webkit specific
+                webkit-playsinline="true"
+                preload="metadata"
+            />
             <div className={styles.videoOverlay}></div>
             <div className={styles.content}>
                 <Image
